@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacerApp.Android", "PacerAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacerApp.iOS", "PacerApp\PacerApp.iOS\PacerApp.iOS.csproj", "{9DBE0CD9-4CE3-4C43-8489-038B3B29D5EE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PacerApp", "PacerApp\PacerApp\PacerApp.csproj", "{3E7127F6-D149-4D3B-9953-40E073937857}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PacerAppUI", "PacerApp\PacerApp\PacerAppUI.csproj", "{3E7127F6-D149-4D3B-9953-40E073937857}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

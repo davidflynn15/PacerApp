@@ -1,5 +1,6 @@
 ﻿using GPSTracker;
 using Newtonsoft.Json;
+using PacerAppUI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,12 +17,12 @@ namespace PacerApp
         //variables
         public Stopwatch stopwatch;
         
-        private const double _speechInterval = 15;  //240 = 4 minutes
-        private const double _gpsIntervalInSec = 7;  
+        private const double _speechIntervalInSec = 15;  //240sec = 4 minutes
+        private const double _gpsIntervalInSec = 7; 
+        
         private double _nextTextToSpeech = 0;
         private double _nextGPSReading = 0;
-
-        private double _distance;
+        private double _distanceInMiles;
         private double _paceActual;
 
         private string _dispElapsedTime;
@@ -43,14 +44,14 @@ namespace PacerApp
         }
 
         //distance in miles
-        public double Distance
+        public double DistanceInMiles
         {
-            get { return _distance; }
+            get { return _distanceInMiles; }
             set
             {
-                _distance = value;
-                DispDistance = _distance.ToString("0.00");
-                RaisePropertyChangedEvent(nameof(Distance));
+                _distanceInMiles = value;
+                DispDistance = _distanceInMiles.ToString("0.00");
+                RaisePropertyChangedEvent(nameof(DistanceInMiles));
                 RaisePropertyChangedEvent(nameof(DispDistance));
             }
         }
@@ -73,7 +74,7 @@ namespace PacerApp
 
         public string DispPaceActual { get; set; }
 
-        public List<GPSCoordinates> Locations { get; set; } = new List<GPSCoordinates>();
+        public List<GPSCoordinate> Locations { get; set; } = new List<GPSCoordinate>();
 
         //------------------------------------------------------
         //constructor
@@ -82,7 +83,7 @@ namespace PacerApp
             //init fields
             StartTime = DateTime.Now;
             stopwatch = new Stopwatch();
-            _nextTextToSpeech = _speechInterval;
+            _nextTextToSpeech = _speechIntervalInSec;
 
             IsDone = false;
             IsRestart = false;
@@ -105,20 +106,20 @@ namespace PacerApp
 
         //-------------------------------------------------------
         //Methods
-        public void SerializeRunData()
-        {
-            Run run = new Run();
-            run.StartTime = StartTime;
-            run.ElapsedTime = stopwatch.Elapsed.TotalSeconds;
-            run.Distance = Distance;
-            run.PaceGoal = PaceGoal;
-            run.PaceActual = PaceActual;
-            run.Locations = Locations;
+        //public void SerializeRunData()
+        //{
+        //    Run run = new Run();
+        //    run.StartTime = StartTime;
+        //    run.ElapsedTime = stopwatch.Elapsed.TotalSeconds;
+        //    run.Distance = Distance;
+        //    run.PaceGoal = PaceGoal;
+        //    run.PaceActual = PaceActual;
+        //    run.Locations = Locations;
 
-            //now serialize to json file
-            string output = JsonConvert.SerializeObject(run);
-            Console.WriteLine(output);
-        }
+        //    //now serialize to json file
+        //    string output = JsonConvert.SerializeObject(run);
+        //    Console.WriteLine(output);
+        //}
 
         public async Task StartRun()
         {
@@ -132,9 +133,9 @@ namespace PacerApp
             if (IsDone)
             {
                 //get final stats
-                Distance += GPSLocation.CalcDistance(
+                DistanceInMiles += GPSLocation.CalcDistance(
                     Locations[Locations.Count - 1], Locations[Locations.Count - 2]);
-                PaceActual = (stopwatch.Elapsed.TotalSeconds / 60) / Distance;
+                PaceActual = (stopwatch.Elapsed.TotalSeconds / 60) / DistanceInMiles;
                 DispElapsedTime = ($"{stopwatch.Elapsed.Minutes.ToString("0")}:{stopwatch.Elapsed.Seconds.ToString("00")}");
             }
         }
@@ -143,14 +144,16 @@ namespace PacerApp
         {
             if ((stopwatch.Elapsed.TotalSeconds / _nextGPSReading) >= 1.0)
             {
-                GPSCoordinates coordinates = await GPSLocation.GetCoordinatesAsync(stopwatch.Elapsed.TotalSeconds);
+                GPSCoordinate coordinates = await GPSLocation.GetCoordinatesAsync(stopwatch.Elapsed.TotalSeconds);
                 Locations.Add(coordinates);
 
                 if (Locations.Count > 1)
                 {
-                    Distance += GPSLocation.CalcDistance(
-                        Locations[Locations.Count - 1], Locations[Locations.Count - 2]);
-                    PaceActual = (stopwatch.Elapsed.TotalSeconds / 60) / Distance;
+                    DistanceInMiles += GPSLocation.CalcDistance(Locations[Locations.Count - 1], Locations[Locations.Count - 2]);
+                    if (DistanceInMiles > .3)
+                    {
+                        PaceActual = (stopwatch.Elapsed.TotalSeconds / 60) / DistanceInMiles;
+                    }
                 }
                 _nextGPSReading += _gpsIntervalInSec;
             }
@@ -185,7 +188,7 @@ namespace PacerApp
                     await TextToSpeech.SpeakAsync("Speed up");
                 }
                 
-                _nextTextToSpeech += _speechInterval;  //add 4 min to time
+                _nextTextToSpeech += _speechIntervalInSec;  //add 4 min to time
             }
         }
 
@@ -195,9 +198,9 @@ namespace PacerApp
 
             _nextGPSReading = 0;
             _nextTextToSpeech = 0;
-            _distance = 0;
-            _paceActual = 0;
-            Distance = 0;
+            //_distanceInMiles = 0;
+            //_paceActual = 0;
+            DistanceInMiles = 0;
             PaceActual = 0;
             DispDistance = string.Empty;
             DispElapsedTime = string.Empty;

@@ -25,15 +25,15 @@ namespace PacerApp
             BindingContext = runVM;     //to bind viewmodel to view
         }
 
-        private async void uxBtnGoAsync_Clicked(object sender, EventArgs e)
+        private async void BtnGoAsync_Clicked(object sender, EventArgs e)
         {
-            if (uxBtnGo.Text == "Go")
+            if (BtnGo.Text == "Go")
             {
                 //if (runVM.IsRestart) runVM.ResetValues();
 
                 runVM.stopwatch.Start();
-                uxBtnGo.Text = "Stop";
-                uxBtnGo.BackgroundColor = Color.FromHex("D91A34");
+                BtnGo.Text = "Stop";
+                BtnGo.BackgroundColor = Color.FromHex("D91A34");
                                 
                 await runVM.StartRun();
             }
@@ -45,8 +45,8 @@ namespace PacerApp
                 //not now
                 //runVM.SerializeRunData();
 
-                uxBtnGo.Text = "Go";
-                uxBtnGo.BackgroundColor = Color.FromHex("#80BF8A");
+                BtnGo.Text = "Go";
+                BtnGo.BackgroundColor = Color.FromHex("#80BF8A");
             }
         }
     }

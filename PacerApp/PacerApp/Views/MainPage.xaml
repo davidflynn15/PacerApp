@@ -21,19 +21,19 @@
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
             <Label Text="Goal (min/mile):" VerticalOptions="Center"
                    FontSize="28" TextColor="White" HorizontalOptions="End" />
-            <Entry x:Name="uxPacerGoal" Placeholder="08:00" WidthRequest="80" VerticalOptions="Center"
+            <Entry x:Name="PacerGoal" Placeholder="08:00" WidthRequest="80" VerticalOptions="Center"
                    TextColor="#F28B66" FontSize="28" 
                    Text="{Binding PaceGoal}"/>
         </StackLayout>
 
-        <Button x:Name="uxBtnGo" BackgroundColor="#80BF8A" Text="Go" 
+        <Button x:Name="BtnGo" BackgroundColor="#80BF8A" Text="Go" 
                 FontAttributes="Bold" FontSize="30" 
-                Clicked="uxBtnGoAsync_Clicked" />
+                Clicked="BtnGoAsync_Clicked" />
 
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
             <Label Text="Distance:" HorizontalOptions="End" VerticalOptions="Center"
                    FontSize="28" TextColor="White"/>
-            <Entry x:Name="uxDistance" IsReadOnly="True" WidthRequest="80" VerticalOptions="Center"
+            <Entry x:Name="Distance" IsReadOnly="True" WidthRequest="80" VerticalOptions="Center"
                    TextColor="#F28B66" FontSize="28"
                    Text="{Binding DispDistance}"/>
         </StackLayout>
@@ -41,7 +41,7 @@
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
             <Label Text="Time:" HorizontalOptions="End" VerticalOptions="Center" Margin="25,0,0,0"
                    FontSize="28" TextColor="White"/>
-            <Entry x:Name="uxTime" IsReadOnly="True" WidthRequest="80" VerticalOptions="Center"
+            <Entry x:Name="Time" IsReadOnly="True" WidthRequest="80" VerticalOptions="Center"
                    TextColor="#F28B66" FontSize="28"
                    Text="{Binding DispElapsedTime}"/>
         </StackLayout>
@@ -49,7 +49,7 @@
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
             <Label Text="Pace:" HorizontalOptions="End" VerticalOptions="Center" Margin="25,0,0,0"
                    FontSize="28" TextColor="White"/> 
-            <Entry x:Name="uxPaceActual" IsReadOnly="True" WidthRequest="80" VerticalOptions="Center"
+            <Entry x:Name="PaceActual" IsReadOnly="True" WidthRequest="80" VerticalOptions="Center"
                    TextColor="#F28B66" FontSize="28"
                    Text="{Binding DispPaceActual}"/>
         </StackLayout>

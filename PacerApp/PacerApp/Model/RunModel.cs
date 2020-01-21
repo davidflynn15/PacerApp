@@ -1,4 +1,5 @@
 ﻿using GPSTracker;
+using PacerAppUI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +10,7 @@ using Xamarin.Essentials;
 
 namespace PacerApp
 {
-    public class Run
+    public class RunModel
     {
         //properties
         public DateTime StartTime { get; set; }     //date & time I started run
@@ -17,7 +18,7 @@ namespace PacerApp
         public double Distance { get; set; }        //in miles
         public string PaceGoal { get; set; }        //minutes/mile
         public double PaceActual { get; set; }
-        public List<GPSCoordinates> Locations { get; set; } = new List<GPSCoordinates>();
+        public List<GPSCoordinate> Locations { get; set; } = new List<GPSCoordinate>();
 
         //------------------------------------------------------
         //constructor

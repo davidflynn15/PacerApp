@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PacerAppUI;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -6,22 +7,11 @@ using Xamarin.Essentials;
 
 namespace PacerApp
 {
-    public class GPSCoordinates
-    {
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public double ElapsedTimeInSec { get; set; }
-        public string message { get; set; }
-
-        //not using constructor at this time
-        // public GPSCoordinates(double latitude, double longitude) { }
-    }
-
     public class GPSLocation
     {
-        public static async Task<GPSCoordinates> GetCoordinatesAsync(double elapsedTime)
+        public static async Task<GPSCoordinate> GetCoordinatesAsync(double elapsedTime)
         {
-            GPSCoordinates coordinates = new GPSCoordinates();
+            GPSCoordinate coordinate = new GPSCoordinate();
             try
             {
                 var request = new GeolocationRequest(GeolocationAccuracy.Best);
@@ -30,12 +20,12 @@ namespace PacerApp
                 if (myLocation != null)
                 {
                     Console.WriteLine($"Latitude: {myLocation.Latitude}, Longitude: {myLocation.Longitude}, Altitude: {myLocation.Altitude}");
-                    coordinates.Latitude = myLocation.Latitude;
-                    coordinates.Longitude = myLocation.Longitude;
-                    coordinates.ElapsedTimeInSec = elapsedTime;
+                    coordinate.Latitude = myLocation.Latitude;
+                    coordinate.Longitude = myLocation.Longitude;
+                    coordinate.ElapsedTimeInSec = elapsedTime;
                 }
 
-                return coordinates;
+                return coordinate;
             }
             catch (FeatureNotSupportedException fnsEx)
             {
@@ -55,17 +45,17 @@ namespace PacerApp
             catch (Exception ex)
             {
                 // Unable to get location
-                coordinates.Latitude = 0;
-                coordinates.Longitude = 0;
-                coordinates.ElapsedTimeInSec = elapsedTime;
-                coordinates.message = "Error - unable to get location";
+                coordinate.Latitude = 0;
+                coordinate.Longitude = 0;
+                coordinate.ElapsedTimeInSec = elapsedTime;
+                coordinate.message = "Error - unable to get location";
 
-                return coordinates;
+                return coordinate;
             }
         }
 
         //calcuate distance between the last two coordinates
-        public static double CalcDistance(GPSCoordinates previous, GPSCoordinates current)
+        public static double CalcDistance(GPSCoordinate previous, GPSCoordinate current)
         {
             Location previousLoc = new Location(previous.Latitude, previous.Longitude);
             Location currentLoc = new Location(current.Latitude, current.Longitude);
